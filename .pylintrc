@@ -2,6 +2,7 @@
 
 disable=
       C0116, #Missing function or method docstring
+      C0115, # Missing class docstring
       C0114, #Missing module docstring
       E0015, # Unrecognized option found: prefer-stubs, suggest-join-with-non-empty-separator
       W0703, # Catching too general exception Exception
