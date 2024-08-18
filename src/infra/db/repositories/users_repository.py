@@ -1,7 +1,10 @@
-from src.infra.db.settings.connection import DBConnectionHandler
-from src.infra.db.entities.users import Users as UsersEntity
+from typing import List
+from ....infra.db.settings.connection import DBConnectionHandler
+from ....infra.db.entities.users import Users as UsersEntity
+from ....data.interfaces.users_repository_interface import UsersRepositoryInterface
+from ....domain.models.users import Users
 
-class UsersRepository:
+class UsersRepository(UsersRepositoryInterface):
     '''
         Classe de repositório de ações da tabela de User.
         Deve conter os métodos de crud da tabela.
@@ -26,3 +29,17 @@ class UsersRepository:
                 database.session.rollback()
                 raise exception
 
+    @classmethod
+    def select_user(cls, first_name: str) -> List[Users]:
+        with DBConnectionHandler() as database:
+            try:
+                users = (
+                    database.session
+                        .query(UsersEntity)
+                        .filter(UsersEntity.first_name == first_name)
+                        .all()
+                )
+                return users
+            except Exception as exception:
+                database.session.rollback()
+                raise exception
